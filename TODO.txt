@@ -1,0 +1,23 @@
+TODO:
+Short-term
+- Add step function
+- add genral construction and production capabilities
+
+Mid-term
+- add polts with resource veins
+- add more production chains
+- achievements
+- research (new chains + quality)
+- dynamic prices + supply and demand
+- loans
+- logistics system
+
+long-term:
+- service market
+- stock market
+- finace market
+- it business
+- competitiors
+- real estate business
+- advanced supply and demand, fully fledged out economic model
+- advertisments, brands
