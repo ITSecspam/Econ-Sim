@@ -5,6 +5,7 @@
 import os
 import sys
 import argparse
+import core
 
 #Set up the arguments
 parser = argparse.ArgumentParser(description='Parses the Arguments, what did you expect?')
@@ -18,16 +19,19 @@ AnswerGiven = False
 while not AnswerGiven and args.loadfrom == None:
     UserInput = input("Do you want to start a new company [Y/N]:")
     if UserInput == 'Y' or UserInput == 'y':
-        print(UserInput)
         AnswerGive = True
-        company = core.create_new_company()
+        Worldname = input("Please enter the world name: ")
+        Companyname = input("PLease enter your companies name: ")
+        GameWorld = core.world(Worldname, Companyname)
+        break
     elif UserInput == 'N' or UserInput == 'n':
         print('Stopping the program, for more info use the arg --help')
         sys.exit()
 
 if args.loadfrom != None:
     try:
-        company = core.load_from_savefile(args.laodfrom)
+        company = core.load_from_savefile(args.loadfrom)
     except (TypeError, ValueError, RuntimeError, IOError):
         print('Please specify a valid filepath or other error, QUITTING!')
         sys.exit()
+print(GameWorld)
