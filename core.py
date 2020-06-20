@@ -9,8 +9,18 @@ class world:
         self.date = datetime.date(1950, 1, 1)
         self.player_comp = player_comp(compname)
         self.buy_price = self.buy_price()
+        self.sell_price = self.sell_price()
     def __str__(self):
         return None
+    def __repr__(self):
+        output = '{'
+        output += self.name +', '
+        output += str(self.date) +', '
+        output += str(self.buy_price) +', '
+        output += str(self.sell_price) +', '
+        output += self.player_comp.__repr__()
+        output += '}'
+        return output
 
     def buy_price(self):
         purchase_price = {'Rice': 40, 'Chair': 600, 'Planks':35}
@@ -29,18 +39,37 @@ class player_comp:
         self.subcomps = []
     def __str__(self):
         return None
+    def __repr__(self):
+        output = '{'
+        output += self.name + ', '
+        output += self.MainCorp.__repr__() + ', '
+        for i in self.subcomps:
+            output += self.i.__repr__() + ', '
+        output += '}'
+        return output
 
 class subcomp:
     """Subcompany"""
     def __init__(self, name, cash):
         self.name = name
-        self.cash = cash
+        self.resources = []
+        for i in range(0, 1800):
+            self.resources.append(0)
+        #setting the cash amount
+        self.resources[0] = cash
         self.factories = []
     def __str__(self):
         return None
+    def __repr__(self):
+        output = '{'
+        output += str(self.name) + ', '
+        output += str(self.resources) + ', '
+        for i in self.factories:
+            output += str(self.i.__repr__()) + ', '
+        output += '}'
+        return output
 
 class factory:
-    
     def __init__(self, form):
         self.form = form
         self.prod = None
@@ -51,6 +80,11 @@ class factory:
         self.running = True
     def stop(self):
         self.running: False
+    def __repr__(self):
+        output = '{'
+        output += str(self.form) + ', '
+        output += str(self.prod) + ', '
+        output += str(self.running) + ', '
 
 def found_subcomp(world, comp, name, cash):
     """Founds a subcompany if possible"""
@@ -82,7 +116,7 @@ def write_to_savefile(savefile, world):
     success = False
     try:
         save = open(savefile, 'w')
-        save.write(world)
+        save.write(world.__repr__())
         save.close()
         success = True
     except FileNotFoundError:
