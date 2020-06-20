@@ -2,20 +2,22 @@
 """An economy game"""
 
 #Import modules
-import os
+from os import getenv
 import sys
 import argparse
 import core
+import interface
 
 #Set up the arguments
 parser = argparse.ArgumentParser(description='Parses the Arguments, what did you expect?')
 parser.add_argument('--loadfrom', metavar='SAVEFILE', help='The Savefile to load from', required=False)
 args = parser.parse_args()
 #Generate starting interface
-print("Hello {}, welcome to econ-sim".format(os.getenv('USER')))
+print("Hello {}, welcome to econ-sim".format(getenv('USER')))
 
 UserInput = None
 AnswerGiven = False
+
 while not AnswerGiven and args.loadfrom == None:
     UserInput = input("Do you want to start a new company [Y/N]:")
     if UserInput == 'Y' or UserInput == 'y':
@@ -34,4 +36,5 @@ if args.loadfrom != None:
     except (TypeError, ValueError, RuntimeError, IOError):
         print('Please specify a valid filepath or other error, QUITTING!')
         sys.exit()
-print(GameWorld)
+
+interface.run_interf(GameWorld)

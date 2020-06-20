@@ -1,16 +1,16 @@
 """Core functions for econ-sim"""
+import datetime
+import sys
 
 class world:
     """The games world object, contains all information about a game"""
     def __init__(self, name, compname):
         self.name = name
+        self.date = datetime.date(1950, 1, 1)
         self.player_comp = player_comp(compname)
         self.buy_price = self.buy_price()
-    def __repr__(self):
-        output = ''
-        output += "Name: "+ self.name + '\n'
-        output += self.player_comp.__repr__()
-        return output
+    def __str__(self):
+        return None
 
     def buy_price(self):
         purchase_price = {'Rice': 40, 'Chair': 600, 'Planks':35}
@@ -18,6 +18,8 @@ class world:
 
     def sell_price(self):
         sell_price = {'Rice': 30, 'Chair': 500, 'Planks': 30}
+    def tick_date(self):
+        self.date += datetime.timedelta(days=7)
 
 class player_comp:
     """The players company"""
@@ -25,13 +27,8 @@ class player_comp:
         self.name = name
         self.MainCorp = subcomp("main", 20000)
         self.subcomps = []
-    def __repr__(self):
-        output = ''
-        output += "Company name:" + self.name +'\n'
-        output += self.MainCorp.__repr__()
-        for i in self.subcomps:
-            output += self.i.__repr__()
-        return output
+    def __str__(self):
+        return None
 
 class subcomp:
     """Subcompany"""
@@ -39,21 +36,22 @@ class subcomp:
         self.name = name
         self.cash = cash
         self.factories = []
-    def __repr__(self):
-        output = ''
-        output += "Subcompany Name:" + self.name + '\n'
-        for i in self.factories:
-            output += self.i.__repr__()
-        return output
+    def __str__(self):
+        return None
 
 class factory:
     
     def __init__(self, form):
         self.form = form
         self.prod = None
-    def __repr__(self):
-        output = ''
-        output += "Factory: Type: {} | Production: {}".format(self.form, self.prod)
+        self.running = False
+    def __str__(self):
+        return None
+    def start(self):
+        self.running = True
+    def stop(self):
+        self.running: False
+
 def found_subcomp(world, comp, name, cash):
     """Founds a subcompany if possible"""
     if name != "main":
@@ -65,3 +63,48 @@ def found_subcomp(world, comp, name, cash):
             print("Could not found subcompany as you lack the money for it")
     else:
         print("Invalid name, please use another name")
+
+def constr_factory(world, comp, subcomp, price, form):
+    """Builds a factory"""
+    if world.comp.subcomp.cash >= price:
+        world.comp.subcomp.factories.append(factory(form))
+    else:
+        print("Could not build {}. Too little cash".format(form))
+
+def load_from_savefile(savefile):
+    """Loads a save"""
+    save  = open(savefile)
+    saveworld = save
+    save.close()
+    return saveworld
+
+def write_to_savefile(savefile, world):
+    success = False
+    try:
+        save = open(savefile, 'w')
+        save.write(world)
+        save.close()
+        success = True
+    except FileNotFoundError:
+        print('Please specify a valid path')
+        success = False
+    return success
+
+def load_prod(filepath):
+    """Loads the production data"""
+    prod_file = open(filepath)
+    prod = prod_file
+    prod_file.close()
+    return prod
+
+def SubC_Str_To_ID(subcstr, world):
+    SubCID = None
+    for i in range(0, len(world.player_comp.subcomps) - 1):
+        if world.player_comp[i].name == subcstr:
+            SubCID = i
+            break
+    if SubCID == None:
+        print('Error: Subcompany {} not found'.format(subcstr))
+        sys.exit()
+    else:
+        return SubCID
